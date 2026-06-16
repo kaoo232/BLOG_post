@@ -1,0 +1,50 @@
+---
+// src/layouts/PostLayout.astro or src/pages/index.astro
+import Header from '../components/Static/Header.astro';
+
+// Pull in the global style sheet centrally
+import '../styles/global.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>The Drawings — House of Phantoms</title>
+		<link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Special+Elite&display=swap" rel="stylesheet">
+		<style>
+			.art-container-box {
+				max-width: 650px;
+				margin: 4rem auto;
+				border: var(--border-thick);
+				box-shadow: var(--shadow-lg);
+				background: var(--cream);
+				padding: 2rem;
+				text-align: center;
+			}
+			.minimalist-art-display {
+				border: var(--border);
+				background: #fff; /* Static white canvas sheet regardless of mode */
+				padding: 3rem 1rem;
+				margin: 1.5rem 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem;">
+			<Header />
+			
+			<div class="art-container-box">
+				<span style="font-family: 'Special Elite', serif; font-size: 0.8rem; text-transform: uppercase; color: var(--red);">PLATE 01 // INDEPENDENT SYSTEM</span>
+				<h2 style="font-family: 'Almendra Display', serif; font-size: 2rem; margin: 0.5rem 0;">THE GEOMETRY OF AN ISOLATED SYSTEM</h2>
+				
+				<div class="minimalist-art-display">
+					<!-- Your minimalist graphic asset or clean line vector file goes here -->
+					<img src="/images/artwork/line-work-01.svg" style="max-width: 100%; height: auto;" alt="Line work diagram" />
+				</div>
+				<p style="font-family: 'Special Elite', serif; font-size: 0.85rem; opacity: 0.7; max-width: 500px; margin: 0 auto;">
+					A study of borders. Lines that prevent leakages between internal processing loops and external noise.
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,395 @@
+
+			:root {
+    /* Muted, mysterious, vintage paper tones */
+    --ink:        #111612; /* Deep, near-black ink */
+    --paper:      #eaddca; /* Aged, antique book page color */
+    --paper-dark: #d2c1ae;
+    --cream:      #f4efe6;
+    --red:        #32746D; /* Crimson/Burgundy instead of bright red */
+    --yellow:     #c2a649; /* Antique gold instead of bright yellow */
+    --teal:       #2a443b; /* Deep forest/phantom green */
+    --teal-light: #416659;
+    --panel-bg:   #ebdcb9;
+
+    --border: 3px solid var(--ink);
+    --border-thick: 4px solid var(--ink);
+    --shadow: 5px 5px 0px var(--ink);
+    --shadow-lg: 7px 7px 0px var(--ink);
+}
+
+			body.dark {
+    /* Perfect inverted alignment (Dark Archive Mode) */
+    --ink:        #f4efe6; /* Text flips to your clean cream color */
+    --paper:      #111612; /* Background flips to your deep near-black ink */
+    --paper-dark: #1a231d; /* Slightly lighter deep green-black for borders/accents */
+    --cream:      #1c241f; /* Dark container background */
+    --panel-bg:   #18211b; /* Muted card background inside the dark grid */
+    
+    /* Keep the mood accents identical but softly glowing/adjusted for dark view */
+    --red:        #4da39a; /* Your signature red/teal accent inverted to stand out beautifully on dark */
+    --yellow:     #dfc365; /* A slightly brighter antique gold so it doesn't get lost */
+    --teal:       #416659; /* Lighter phantom green for dark mode visibility */
+    --teal-light: #568575;
+
+    /* These automatically inherit the new cream-colored ink variable! */
+    --border: 3px solid var(--ink);
+    --border-thick: 4px solid var(--ink);
+    --shadow: 5px 5px 0px var(--ink);
+    --shadow-lg: 7px 7px 0px var(--ink);
+}
+
+			*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+			html { scroll-behavior: smooth; }
+
+			body {
+				background-color: var(--paper);
+				color: var(--ink);
+				font-family: 'Special Elite', serif;
+				min-height: 100vh;
+				overflow-x: hidden;
+				/* halftone dot texture via SVG data URI */
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.1' fill='%231a0a00' opacity='0.07'/%3E%3C/svg%3E");
+			}
+
+			body.dark {
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.1' fill='%23e8dcc8' opacity='0.06'/%3E%3C/svg%3E");
+			}
+
+			/* ── PAGE WRAPPER ── */
+			.page-wrap {
+				max-width: 1080px;
+				margin: 0 auto;
+				padding: 0 1.5rem 5rem;
+			}
+
+			/* ── MASTHEAD ── */
+			.masthead {
+				text-align: center;
+				padding: 2.5rem 1rem 2rem;
+				position: relative;
+			}
+
+			.masthead-banner {
+				display: inline-block;
+				position: relative;
+				background: var(--red);
+				color: var(--yellow);
+				padding: 0.6rem 2.8rem 0.5rem;
+				border: var(--border-thick);
+				box-shadow: var(--shadow-lg);
+				transform: rotate(-1deg);
+				margin-bottom: 1.2rem;
+			}
+
+			.masthead-banner::before,
+			.masthead-banner::after {
+				content: '★';
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				font-size: 1rem;
+				color: var(--yellow);
+			}
+			.masthead-banner::before { left: 0.8rem; }
+			.masthead-banner::after  { right: 0.8rem; }
+
+			.masthead h1 {
+				font-family: 'Almendra Display', serif;
+				font-size: clamp(3rem, 10vw, 6rem);
+				letter-spacing: 0.06em;
+				line-height: 1;
+				text-transform: uppercase;
+				color: var(--ink);
+				/* comic book outline effect */
+				-webkit-text-stroke: 2px var(--ink);
+				paint-order: stroke fill;
+			}
+
+			.issue-line {
+				font-family: 'Special Elite', serif;
+				font-size: 0.78rem;
+				letter-spacing: 0.18em;
+				text-transform: uppercase;
+				color: var(--ink);
+				opacity: 0.6;
+				margin-top: 0.4rem;
+			}
+
+			/* speech-bubble tagline */
+			.speech-bubble {
+    display: inline-block;
+    position: relative;
+    background: var(--panel-bg); /* Use the antique book page color instead of neon yellow */
+    color: var(--ink);
+    border: var(--border);
+    box-shadow: 4px 4px 0px var(--ink);
+    padding: 0.6rem 1.5rem;
+    font-family: 'Patrick Hand', cursive; /* Keeps that intimate, handwritten touch */
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    margin-top: 1.5rem;
+    border-radius: 4px; /* Slightly boxier, less like a cartoon bubble */
+    max-width: 520px;
+}
+
+/* Let's turn the cartoon bubble pointer into a clean, jagged manuscript tear or drop it completely */
+.speech-bubble::after, .speech-bubble::before {
+    display: none; /* Disabling the comic tail makes it feel like an antique taped note */
+}
+
+		
+			/* divider */
+			.divider {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				margin: 2.5rem 0 2rem;
+				color: var(--ink);
+				opacity: 0.4;
+				font-family: 'Bangers', cursive;
+				font-size: 0.9rem;
+				letter-spacing: 0.2em;
+			}
+			.divider::before, .divider::after {
+				content: '';
+				flex: 1;
+				height: 2px;
+				background: var(--ink);
+			}
+
+			/* ── CARD GRID ── */
+			.cards-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+				gap: 2.8rem 2rem;
+				list-style: none;
+				/* center when few cards */
+				justify-content: center;
+			}
+
+			/* ── SINGLE CARD ── */
+			.card {
+				background: var(--panel-bg);
+				border: var(--border-thick);
+				box-shadow: var(--shadow-lg);
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				cursor: pointer;
+
+				/* staggered tilt — set via inline style */
+				transform: rotate(var(--tilt, 0deg));
+				transition:
+					transform 0.28s cubic-bezier(.22,.68,0,1.3),
+					box-shadow 0.28s ease;
+
+				opacity: 0;
+				animation: pop-in 0.45s cubic-bezier(.22,.68,0,1.3) forwards;
+			}
+
+			.card:nth-child(1)  { animation-delay: 0.04s; }
+			.card:nth-child(2)  { animation-delay: 0.10s; }
+			.card:nth-child(3)  { animation-delay: 0.16s; }
+			.card:nth-child(4)  { animation-delay: 0.22s; }
+			.card:nth-child(5)  { animation-delay: 0.28s; }
+			.card:nth-child(6)  { animation-delay: 0.34s; }
+			.card:nth-child(n+7){ animation-delay: 0.40s; }
+
+			@keyframes pop-in {
+				from { opacity: 0; transform: rotate(var(--tilt, 0deg)) scale(0.88); }
+				to   { opacity: 1; transform: rotate(var(--tilt, 0deg)) scale(1); }
+			}
+
+			.card:hover {
+				transform: rotate(0deg) scale(1.04);
+				box-shadow: 10px 10px 0px var(--ink);
+				z-index: 10;
+			}
+
+			/* corner price tag */
+			.card-price {
+				position: absolute;
+				top: -1px;
+				right: -1px;
+				background: var(--red);
+				color: #fff;
+				font-family: 'Bangers', cursive;
+				font-size: 0.85rem;
+				letter-spacing: 0.05em;
+				padding: 0.2rem 0.55rem;
+				border-left: var(--border-thick);
+				border-bottom: var(--border-thick);
+				z-index: 2;
+			}
+
+			/* ── CARD PHOTO ── */
+			.card-photo {
+				width: 100%;
+				aspect-ratio: 3 / 2;
+				overflow: hidden;
+				border-bottom: var(--border-thick);
+				position: relative;
+				flex-shrink: 0;
+			}
+
+			.card-photo img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+				/* CMYK-ish desaturate then tint on hover */
+				filter: sepia(25%) contrast(1.08);
+				transition: filter 0.4s ease, transform 0.4s ease;
+			}
+
+			.card:hover .card-photo img {
+				filter: sepia(10%) contrast(1.12) saturate(1.3);
+				transform: scale(1.06);
+			}
+
+			/* halftone overlay on photo */
+			.card-photo::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='3' cy='3' r='1' fill='%231a0a00' opacity='0.12'/%3E%3C/svg%3E");
+				pointer-events: none;
+				z-index: 1;
+			}
+
+			/* chapter label on photo */
+			.card-chapter {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				background: var(--teal);
+				color: #fff;
+				font-family: 'Bangers', cursive;
+				font-size: 0.78rem;
+				letter-spacing: 0.12em;
+				padding: 0.18rem 0.7rem;
+				border-top: 2px solid var(--ink);
+				border-right: 2px solid var(--ink);
+				z-index: 2;
+			}
+
+			/* ── CARD BODY ── */
+			.card-body {
+				padding: 1rem 1.1rem 1.2rem;
+				display: flex;
+				flex-direction: column;
+				gap: 0.6rem;
+				flex: 1;
+			}
+
+			.card-date {
+				font-family: 'Special Elite', serif;
+				font-size: 0.7rem;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--ink);
+				opacity: 0.5;
+			}
+
+			.card-title {
+				font-family: 'Almendra Display', serif;
+				font-size: 1.45rem;
+				letter-spacing: 0.04em;
+				line-height: 1.15;
+				color: var(--ink);
+				text-decoration: none;
+				display: block;
+				transition: color 0.2s;
+				text-transform: uppercase;
+			}
+
+			.card-title:hover {
+				color: var(--red);
+			}
+
+			.card-desc {
+				font-family: 'Patrick Hand', cursive;
+				font-size: 0.88rem;
+				line-height: 1.55;
+				color: var(--ink);
+				opacity: 0.8;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			/* tags */
+			.card-tags {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.35rem;
+				margin-top: auto;
+			}
+
+			.card-tag {
+				font-family: 'Special Elite', serif;
+				font-size: 0.68rem;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				background: var(--yellow);
+				color: var(--ink);
+				border: 2px solid var(--ink);
+				padding: 0.1rem 0.45rem;
+			}
+
+			/* read CTA */
+			.card-cta {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				font-family: 'Almendra Display', serif;
+				font-size: 0.95rem;
+				letter-spacing: 0.1em;
+				color: var(--panel-bg);
+				background: var(--ink);
+				padding: 0.32rem 0.9rem;
+				text-decoration: none;
+				border: 2px solid var(--ink);
+				align-self: flex-start;
+				margin-top: 0.4rem;
+				transition: background 0.18s, color 0.18s;
+			}
+
+			.card-cta:hover {
+				background: var(--red);
+				border-color: var(--red);
+			}
+
+			/* ── EMPTY STATE ── */
+			.empty {
+				text-align: center;
+				font-family: 'Permanent Marker', cursive;
+				font-size: 1.3rem;
+				color: var(--ink);
+				opacity: 0.4;
+				padding: 4rem 0;
+			}
+
+			/* ── FOOTER DECO ── */
+			.footer-deco {
+				text-align: center;
+				margin-top: 4rem;
+				font-family: 'Bangers', cursive;
+				letter-spacing: 0.3em;
+				font-size: 0.85rem;
+				color: var(--ink);
+				opacity: 0.3;
+			}
+
+			/* ── RESPONSIVE ── */
+			@media (max-width: 520px) {
+				.cards-grid {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+				}
+				.card { --tilt: 0deg !important; }
+			}
+		

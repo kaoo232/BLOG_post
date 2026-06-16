@@ -1,0 +1,465 @@
+---
+const { frontmatter } = Astro.props;
+import Header from '../components/Static/Header.astro';
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{frontmatter.title}</title>
+		
+		<!-- Perfect gothic novel font pairings -->
+		<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Patrick+Hand&family=Special+Elite&family=Almendra+Display&family=IM+Fell+DW+Pica&display=swap" rel="stylesheet">
+		
+		<style is:global>
+			:root {
+				/* Muted, mysterious, vintage paper tones (Light Mode) */
+				--ink: #111612; /* Deep, near-black ink */
+				--paper: #eaddca; /* Aged, antique book page color */
+				--paper-dark: #d2c1ae;
+				--cream: #f4efe6;
+				--red: #32746D; /* Crimson/Burgundy instead of bright red */
+				--yellow: #c2a649; /* Antique gold instead of bright yellow */
+				--teal: #2a443b; /* Deep forest/phantom green */
+				--teal-light: #416659;
+				--panel-bg: #ebdcb9;
+
+				--border: 3px solid var(--ink);
+				--border-thick: 4px solid var(--ink);
+				--shadow: 5px 5px 0px var(--ink);
+				--shadow-lg: 7px 7px 0px var(--ink);
+			}
+
+			body.dark {
+				/* Perfect inverted alignment (Dark Archive Mode) */
+				--ink: #f4efe6; /* Text flips to clean cream color */
+				--paper: #111612; /* Background flips to deep near-black ink */
+				--paper-dark: #1a231d;
+				--cream: #1c241f; 
+				--panel-bg: #18211b; 
+				
+				--red: #4da39a; /* Inverted accent to pop beautifully on dark backgrounds */
+				--yellow: #dfc365; 
+				--teal: #416659; 
+				--teal-light: #568575;
+
+				--border: 3px solid var(--ink);
+				--border-thick: 4px solid var(--ink);
+				--shadow: 5px 5px 0px var(--ink);
+				--shadow-lg: 7px 7px 0px var(--ink);
+			}
+
+			*, *::before, *::after { 
+				box-sizing: border-box; 
+				margin: 0; 
+				padding: 0; 
+			}
+
+			body {
+				background-color: var(--paper);
+				color: var(--ink);
+				font-family: 'IM Fell DW Pica', serif; /* Immersive, literary serif body text */
+				font-size: 1.15rem;
+				line-height: 1.65;
+				min-height: 100vh;
+				transition: background-color 0.4s ease, color 0.4s ease;
+				
+				/* Halftone dot texture mapping matching index page */
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.1' fill='%231a0a00' opacity='0.07'/%3E%3C/svg%3E");
+			}
+
+			body.dark {
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.1' fill='%23e8dcc8' opacity='0.06'/%3E%3C/svg%3E");
+			}
+
+			/* ARTICLE FRAME CONTROLLER */
+			.article-container {
+				max-width: 760px;
+				margin: 0 auto;
+				padding: 0 1.5rem 5rem;
+			}
+
+			/* POST HEADER */
+			.post-header {
+				margin: 2rem 0 2.5rem 0;
+				text-align: left;
+			}
+
+			/* Comic Magazine Stamp Row */
+			.magazine-meta-row {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+				margin-bottom: 1rem;
+				flex-wrap: wrap;
+			}
+
+			.comic-badge {
+				font-family: 'Special Elite', serif;
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				background-color: var(--yellow);
+				color: var(--paper); /* Flipped ink to stand out */
+				padding: 0.15rem 0.5rem;
+				border: 2px solid var(--ink);
+				font-weight: bold;
+				box-shadow: 2px 2px 0px var(--ink);
+			}
+
+			.comic-badge.issue {
+				background-color: var(--red);
+			}
+
+			.post-date {
+				font-family: 'Special Elite', serif; /* Typewriter timestamp style */
+				font-size: 0.8rem;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				color: var(--ink);
+				opacity: 0.7;
+			}
+
+			h1.post-title {
+				font-family: 'Almendra Display', serif; /* Haunting editorial layout header */
+				font-size: clamp(2.2rem, 6vw, 3.8rem);
+				line-height: 1.1;
+				color: var(--ink);
+				text-transform: uppercase;
+				margin-bottom: 1.5rem;
+				margin-top: 0.5rem;
+			}
+
+			/* MARKDOWN CONTENT AREA STYLING */
+			.post-content p {
+				margin-bottom: 1.6rem;
+				text-align: justify;
+			}
+
+			.post-content h2, .post-content h3 {
+				font-family: 'Almendra Display', serif;
+				color: var(--ink);
+				text-transform: uppercase;
+				margin-top: 2.5rem;
+				margin-bottom: 1rem;
+				line-height: 1.2;
+				letter-spacing: 0.5px;
+			}
+
+			.post-content h2 { 
+				font-size: 1.8rem; 
+				border-bottom: 2px solid var(--paper-dark); 
+				padding-bottom: 0.3rem; 
+			}
+			
+			.post-content h3 { font-size: 1.4rem; }
+
+			.post-content blockquote {
+				border-left: var(--border-thick);
+				background: var(--panel-bg);
+				padding: 1rem 1.5rem;
+				margin: 2rem 0;
+				font-family: 'Patrick Hand', cursive; /* Beautiful handwritten switch for quotes/secrets */
+				font-size: 1.3rem;
+				box-shadow: 4px 4px 0px var(--ink);
+				border-top: 1px solid var(--ink);
+				border-right: 1px solid var(--ink);
+				border-bottom: 1px solid var(--ink);
+			}
+
+			.post-content blockquote p {
+				margin-bottom: 0;
+			}
+
+			.post-content code {
+				font-family: 'Special Elite', serif;
+				background-color: var(--paper-dark);
+				padding: 0.2rem 0.4rem;
+				font-size: 0.9rem;
+				border: 1px dashed var(--ink);
+			}
+
+			.post-content .stamp {
+				font-family: 'Permanent Marker', sans-serif;
+				background: var(--red);
+				color: var(--paper);
+				padding: 0.1rem 0.4rem;
+				transform: rotate(-2deg);
+				display: inline-block;
+				font-size: 0.9rem;
+				box-shadow: 2px 2px 0px var(--ink);
+				margin: 0 0.2rem;
+			}
+
+			/* The Editorial Sign-off Box at the end of every story */
+			.post-footer-panel {
+				margin-top: 4rem;
+				background-color: var(--panel-bg);
+				border: var(--border);
+				padding: 1.5rem;
+				box-shadow: var(--shadow);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-family: 'Special Elite', serif;
+			}
+
+			.footer-panel-text h4 {
+				text-transform: uppercase;
+				font-size: 1rem;
+				color: var(--red);
+				margin-bottom: 0.3rem;
+			}
+
+			.footer-panel-text p {
+				font-size: 0.85rem;
+				opacity: 0.8;
+				margin-bottom: 0;
+			}
+
+			.comic-end-stamp {
+				font-family: 'Bangers', sans-serif;
+				font-size: 1.8rem;
+				letter-spacing: 1px;
+				color: var(--ink);
+				border: 2px dashed var(--ink);
+				padding: 0.2rem 0.8rem;
+				transform: rotate(3deg);
+				background: var(--yellow);
+			}
+
+			/* INTERACTION ZONE STYLING */
+			.interaction-zone {
+				margin-top: 4rem;
+				display: flex;
+				flex-direction: column;
+				gap: 3rem;
+			}
+
+			/* ==========================================================================
+			   CUSTOM SUBSCRIPTION INTEGRATION OVERRIDES
+			   ========================================================================== */
+			.wbnz-email-signup-form {
+				background: transparent !important;
+				border: 3px dashed var(--ink) !important; /* Coupon look */
+				padding: 2rem !important;
+				margin-top: 2rem !important;
+				display: flex !important;
+				flex-direction: column !important;
+				gap: 1rem !important;
+				box-sizing: border-box !important;
+			}
+
+			.wbnz-email-signup-form h3 {
+				font-family: 'Bangers', sans-serif !important;
+				font-size: 1.8rem !important;
+				letter-spacing: 1px !important;
+				color: var(--ink) !important;
+			}
+
+			.wbnz-email-signup-form p {
+				font-family: 'Special Elite', serif !important;
+				font-size: 0.9rem !important;
+				color: var(--ink) !important;
+				opacity: 0.85;
+			}
+
+			.wbnz-email-signup-form input[type="email"],
+			.wbnz-email-signup-form input[type="text"] {
+				background: var(--cream) !important;
+				border: var(--border) !important;
+				color: var(--ink) !important;
+				padding: 0.6rem !important;
+				font-family: 'Special Elite', serif !important;
+				font-size: 1rem !important;
+			}
+
+			.wbnz-email-signup-form button {
+				font-family: 'Bangers', sans-serif !important;
+				font-size: 1.3rem !important;
+				letter-spacing: 1px !important;
+				background: var(--yellow) !important;
+				color: var(--ink) !important;
+				border: var(--border) !important;
+				padding: 0.6rem 1.5rem !important;
+				cursor: pointer !important;
+				box-shadow: 3px 3px 0px var(--ink) !important;
+				transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+				width: fit-content;
+				align-self: flex-end;
+			}
+
+			.wbnz-email-signup-form button:hover {
+				background: var(--red) !important;
+				color: var(--cream) !important;
+				transform: translate(-2px, -2px) !important;
+				box-shadow: 5px 5px 0px var(--ink) !important;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div class="article-container">
+			<Header />
+
+			<!-- Progress Bar Elements -->
+			<div id="phantom-progress-bar" style="
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 0%;
+				height: 2px;
+				background: var(--ink);
+				z-index: 9999;
+				transition: width 0.1s ease-out;
+			"></div>
+
+			<div id="phantom-progress-tracker" style="
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				font-family: 'Special Elite', serif;
+				font-size: 0.75rem;
+				color: var(--ink);
+				opacity: 0.6;
+				letter-spacing: 0.1em;
+				z-index: 9998;
+				pointer-events: none;
+			">
+				LOG DEPTH: <span id="phantom-progress-percent">0%</span>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function() {
+					const progressBar = document.getElementById('phantom-progress-bar');
+					const progressPercent = document.getElementById('phantom-progress-percent');
+					
+					function updateReadingProgress() {
+						const scrollTop = window.scrollY || document.documentElement.scrollTop;
+						const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+						
+						if (totalHeight > 0) {
+							const percentage = Math.min(Math.floor((scrollTop / totalHeight) * 100), 100);
+							if(progressBar) progressBar.style.width = percentage + '%';
+							if(progressPercent) progressPercent.textContent = percentage + '%';
+						} else {
+							if(progressBar) progressBar.style.width = '0%';
+							if(progressPercent) progressPercent.textContent = '0%';
+						}
+					}
+
+					window.addEventListener('scroll', updateReadingProgress, { passive: true });
+					window.addEventListener('resize', updateReadingProgress);
+					updateReadingProgress();
+				});
+			</script>
+
+			<article>
+				<!-- Post Metadata Row -->
+				<header class="post-header">
+					<div class="magazine-meta-row">
+						{frontmatter.issue && <span class="comic-badge issue">ISSUE #{frontmatter.issue}</span>}
+						{frontmatter.category && <span class="comic-badge">{frontmatter.category}</span>}
+						<span class="post-date">[{frontmatter.pubDate}] &nbsp;·&nbsp; Recorded by {frontmatter.author || 'The Resident'}</span>
+					</div>
+					<h1 class="post-title">{frontmatter.title}</h1>
+				</header>
+
+				<!-- Big Framed Hero Photo -->
+				{frontmatter.heroImage && (
+					<div class="post-hero-frame flashlight-frame" id="flashlight-hero">
+						<img class="post-hero-img" src={frontmatter.heroImage} alt={frontmatter.title} />
+					</div>
+				)}
+
+				<style>
+					/* ── FLEXIBLE & SHRINK-WRAPPED HERO FRAME ── */
+					.post-hero-frame.flashlight-frame {
+						border: var(--border-thick);
+						box-shadow: var(--shadow-lg);
+						background: #000;
+						margin: 2rem auto;
+						display: table; 
+						width: auto;
+						max-width: 100%;
+						position: relative;
+						cursor: crosshair;
+						overflow: hidden;
+					}
+
+					/* ── RESPONSIVE HERO IMAGE ── */
+					.post-hero-img {
+						display: block;
+						width: 100%;
+						height: auto;
+						max-height: 80vh;
+						object-fit: contain;
+						filter: brightness(0.3) sepia(20%);
+						transition: filter 0.3s ease;
+					}
+
+					/* ── FLASHLIGHT HOVER MECHANIC ── */
+					.post-hero-frame:hover .post-hero-img {
+						filter: brightness(1) sepia(5%) contrast(1.15);
+						mask-image: radial-gradient(
+							circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+							rgba(0,0,0,1) 20%, 
+							rgba(0,0,0,0) 100
+						);
+						-webkit-mask-image: radial-gradient(
+							circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+							rgba(0,0,0,1) 20%, 
+							rgba(0,0,0,0) 100%
+						);
+					}
+				</style>
+
+				<script>
+					const flashlightHero = document.getElementById('flashlight-hero');
+					if (flashlightHero) {
+						flashlightHero.addEventListener('mousemove', (e) => {
+							const rect = flashlightHero.getBoundingClientRect();
+							const x = ((e.clientX - rect.left) / rect.width) * 100;
+							const y = ((e.clientY - rect.top) / rect.height) * 100;
+							
+							flashlightHero.style.setProperty('--mouse-x', `${x}%`);
+							flashlightHero.style.setProperty('--mouse-y', `${y}%`);
+						});
+					}
+				</script>
+
+				<!-- Rendered Markdown Content Blocks -->
+				<main class="post-content">
+					<slot />
+				</main>
+
+				<!-- Vintage Comic Sign-Off Footer Box -->
+				<footer class="post-footer-panel">
+					<div class="footer-panel-text">
+						<h4>End of Record</h4>
+						<p>The phantoms retreat to the corridors. A new window lights up next week.</p>
+					</div>
+					<div class="comic-end-stamp">TO BE CONTINUED...</div>
+				</footer>
+
+				<!-- THEMATIC INTERACTION ZONE -->
+				
+				<section class="interaction-zone">
+					<div style="display: flex; justify-content: center;">
+						<div class='wbnz-email-signup-form' data-webynize-id='11228'></div>
+						<script defer src='https://widgets.webynize.com/email-signup-form.js'></script>
+					</div>
+ 
+					<div style="
+						max-height: 480px;
+						overflow-y: auto;
+						border: var(--border);
+						box-shadow: var(--shadow);
+					"> <br>
+						<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+						<div class="commonninja_component pid-8f00ac37-abcc-45a3-a972-e4474801aaf6"></div>
+					</div>
+				</section>
+			</article>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,45 @@
+
+---
+// src/layouts/PostLayout.astro or src/pages/index.astro
+import Header from '../components/Static/Header.astro';
+
+// Pull in the global style sheet centrally
+import '../styles/global.css';
+---
+
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Manifesto — House of Phantoms</title>
+		<link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Special+Elite&family=IM+Fell+DW+Pica&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div style="max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem;">
+			<Header />
+			
+			<article style="margin-top: 3rem; font-family: 'IM Fell DW Pica', serif; font-size: 1.2rem; line-height: 1.7;">
+				<h1 style="font-family: 'Almendra Display', serif; font-size: 3.5rem; text-transform: uppercase; margin-bottom: 2rem; border-bottom: var(--border); padding-bottom: 0.5rem;">
+					The Manifesto
+				</h1>
+				
+				<p style="margin-bottom: 1.5rem; text-align: justify; font-style: italic;">
+					"Why build a house out of shadows and software?"
+				</p>
+				
+				<p style="margin-bottom: 1.5rem; text-align: justify;">
+					Because the physical world is loud, overcrowded, and constantly demanding classification. We are taught to constantly evaluate every transaction, catalog every social alignment, and look for meaning where there is only background static. 
+				</p>
+
+				<p style="margin-bottom: 1.5rem; text-align: justify;">
+					<strong>House of Phantoms</strong> is an intentional retreat into architectural line weight, quiet visual observation, and sequential narrative world building. It is a space where structural systems handle the data, and creative prose handles the feeling. 
+				</p>
+
+				<blockquote style="border: var(--border); background: var(--panel-bg); padding: 1.5rem; margin: 2rem 0; font-family: 'Special Elite', serif; font-size: 0.95rem; box-shadow: var(--shadow);">
+					RULE FOR THE CORRIDORS:<br>
+					Leave the tracking loops outside the frame. Once you cross the dynamic ink threshold, you are completely anonymous, self-contained, and free to create.
+				</blockquote>
+			</article>
+		</div>
+	</body>
+</html>

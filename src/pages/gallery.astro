@@ -1,0 +1,62 @@
+---
+// src/layouts/PostLayout.astro or src/pages/index.astro
+import Header from '../components/Static/Header.astro';
+
+// Pull in the global style sheet centrally
+import '../styles/global.css';
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Observations — House of Phantoms</title>
+		<link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=Special+Elite&family=IM+Fell+DW+Pica&display=swap" rel="stylesheet">
+		<style>
+			.photo-panel-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 2.5rem;
+				margin-top: 3rem;
+			}
+			.photo-card {
+				border: var(--border-thick);
+				background: var(--panel-bg);
+				box-shadow: var(--shadow);
+				padding: 1rem;
+			}
+			.photo-frame {
+				width: 100%;
+				aspect-ratio: 1 / 1;
+				border: 2px solid var(--ink);
+				overflow: hidden;
+				background-color: var(--ink);
+			}
+			.photo-frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(15%); }
+			.photo-meta {
+				font-family: 'Special Elite', serif;
+				font-size: 0.8rem;
+				margin-top: 0.8rem;
+				display: flex;
+				justify-content: space-between;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem;">
+			<Header />
+			<h1 style="font-family: 'Almendra Display', serif; font-size: 3rem; text-transform: uppercase;">Observations</h1>
+			
+			<div class="photo-panel-grid">
+				<!-- Repeat this card block for each shot -->
+				<div class="photo-card">
+					<div class="photo-frame">
+						<img src="/images/gallery/shot-01.jpg" alt="Staircase shadow" />
+					</div>
+					<div class="photo-meta">
+						<span>REF_NO // 409X</span>
+						<span style="color: var(--red);">[LOCATION: COURTYARD]</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
