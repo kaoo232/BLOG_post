@@ -55,7 +55,7 @@ he said it while showed to them a copy of paper
 
 they oldest phantom have read it , and he made some space for him to enter the house
 
-> # "welcome to the house of phantoms! "
+>  "welcome to the house of phantoms! "
 
 they welcomed him, while he could not understand the reason behind their way of looking towards him ,
 
