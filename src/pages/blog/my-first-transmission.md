@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/PostLayout.astro
+layout: ../../Layouts/PostLayout.astro
 title: " In a House Full of Mad Souls"
 pubDate: "2026-06-20"
 author: "Korbas Zineb"
