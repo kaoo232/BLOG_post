@@ -357,33 +357,38 @@ import Header from '../components/Static/Header.astro';
 				height: auto;
 				max-height: 80vh;
 				object-fit: contain;
+				filter: brightness(0.3) sepia(20%);
+				transition: filter 0.3s ease;
 			}
 
-			/* ── FLASHLIGHT HOVER MECHANIC: only enabled on devices with a real mouse.
-			   On touch devices the image now stays at full visibility since there is
-			   no hover event to reveal it. ── */
+			/* ── FLASHLIGHT MECHANIC ──
+			   Desktop: moving the mouse over the frame reveals the spot (the
+			   .is-active class is added on pointerenter/pointermove by the script
+			   below). Mobile/touch: press-and-drag a finger across the photo to
+			   reveal the same spot, following the touch point — same effect, just
+			   triggered by touch instead of hover, since touchscreens have no
+			   hover concept. */
+			.post-hero-frame.flashlight-frame.is-active .post-hero-img {
+				filter: brightness(1) sepia(5%) contrast(1.15);
+				mask-image: radial-gradient(
+					circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+					rgba(0,0,0,1) 20%, 
+					rgba(0,0,0,0) 100%
+				);
+				-webkit-mask-image: radial-gradient(
+					circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+					rgba(0,0,0,1) 20%, 
+					rgba(0,0,0,0) 100%
+				);
+			}
+
+			.post-hero-frame.flashlight-frame {
+				touch-action: none; /* dragging a finger reveals the photo instead of scrolling the page */
+			}
+
 			@media (hover: hover) and (pointer: fine) {
 				.post-hero-frame.flashlight-frame {
 					cursor: crosshair;
-				}
-
-				.post-hero-img {
-					filter: brightness(0.3) sepia(20%);
-					transition: filter 0.3s ease;
-				}
-
-				.post-hero-frame:hover .post-hero-img {
-					filter: brightness(1) sepia(5%) contrast(1.15);
-					mask-image: radial-gradient(
-						circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-						rgba(0,0,0,1) 20%, 
-						rgba(0,0,0,0) 100%
-					);
-					-webkit-mask-image: radial-gradient(
-						circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-						rgba(0,0,0,1) 20%, 
-						rgba(0,0,0,0) 100%
-					);
 				}
 			}
 
@@ -549,14 +554,48 @@ import Header from '../components/Static/Header.astro';
 
 				<script>
 					const flashlightHero = document.getElementById('flashlight-hero');
-					if (flashlightHero && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-						flashlightHero.addEventListener('mousemove', (e) => {
+					if (flashlightHero) {
+						function updateSpot(clientX, clientY) {
 							const rect = flashlightHero.getBoundingClientRect();
-							const x = ((e.clientX - rect.left) / rect.width) * 100;
-							const y = ((e.clientY - rect.top) / rect.height) * 100;
-							
+							const x = ((clientX - rect.left) / rect.width) * 100;
+							const y = ((clientY - rect.top) / rect.height) * 100;
 							flashlightHero.style.setProperty('--mouse-x', `${x}%`);
 							flashlightHero.style.setProperty('--mouse-y', `${y}%`);
+						}
+
+						// Mouse: reveal follows the cursor the whole time it's over the photo.
+						flashlightHero.addEventListener('pointerenter', (e) => {
+							if (e.pointerType === 'mouse') {
+								updateSpot(e.clientX, e.clientY);
+								flashlightHero.classList.add('is-active');
+							}
+						});
+
+						flashlightHero.addEventListener('pointerleave', (e) => {
+							if (e.pointerType === 'mouse') {
+								flashlightHero.classList.remove('is-active');
+							}
+						});
+
+						// Touch/pen: reveal follows the finger while it's pressed and dragging.
+						flashlightHero.addEventListener('pointerdown', (e) => {
+							if (e.pointerType !== 'mouse') {
+								updateSpot(e.clientX, e.clientY);
+								flashlightHero.classList.add('is-active');
+							}
+						});
+
+						['pointerup', 'pointercancel'].forEach((eventName) => {
+							flashlightHero.addEventListener(eventName, (e) => {
+								if (e.pointerType !== 'mouse') {
+									flashlightHero.classList.remove('is-active');
+								}
+							});
+						});
+
+						// Position updates for both input types while active.
+						flashlightHero.addEventListener('pointermove', (e) => {
+							updateSpot(e.clientX, e.clientY);
 						});
 					}
 				</script>
