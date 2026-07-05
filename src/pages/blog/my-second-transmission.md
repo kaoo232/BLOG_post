@@ -100,7 +100,7 @@ He was going to be sandwitched right between the chaotic gamer and his deeply so
 
 "What is his name?" 
 
-"Kao, " he responded
+"Kai, " he responded
 
 "what about you?"
 
