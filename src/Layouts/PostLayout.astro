@@ -1,7 +1,53 @@
 ---
 const { frontmatter } = Astro.props;
+const url = Astro.url;
 import Header from '../components/Static/Header.astro';
+
+// Posts live as plain markdown pages in src/pages/blog/ (no content collection),
+// so we pull them in with import.meta.glob rather than getCollection(). Each
+// module exposes `frontmatter` (the post's frontmatter) and `url` (the final
+// built page URL), which is exactly what we need to build prev/next links.
+//
+// NOTE: adjust the glob path below if this layout file lives somewhere other
+// than src/layouts/ — it must resolve to src/pages/blog/*.md.
+const postModules = import.meta.glob('../pages/blog/*.md', { eager: true });
+
+const allPosts = Object.values(postModules).map((mod) => ({
+  frontmatter: mod.frontmatter,
+  url: mod.url,
+}));
+
+const sortedPosts = allPosts.sort((a, b) => {
+  const dateA = new Date(a.frontmatter.pubDate).getTime();
+  const dateB = new Date(b.frontmatter.pubDate).getTime();
+
+  // If dates are invalid, treat them as 0, but log an error to find the culprit
+  if (isNaN(dateA)) console.error(`Invalid date in: ${a.frontmatter.title}`);
+  if (isNaN(dateB)) console.error(`Invalid date in: ${b.frontmatter.title}`);
+
+  return dateA - dateB; // Ascending: Oldest to Newest
+});
+
+
+// 1. Ensure your helper handles trailing slashes consistently
+const normalize = (path) => path?.replace(/\/+$/, "").toLowerCase() || "";
+
+// 2. The finding logic
+const currentPath = normalize(url?.pathname);
+
+// Current index is the position of your current chapter
+const currentIndex = sortedPosts.findIndex((p) => normalize(p.url) === currentPath);
+
+console.log("All posts found:", allPosts.map(p => p.frontmatter.title));
+
+// Previous is index - 1 (the one before)
+const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+
+// Next is index + 1 (the one after)
+const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
 ---
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -616,24 +662,104 @@ import Header from '../components/Static/Header.astro';
 
 				<!-- THEMATIC INTERACTION ZONE -->
 				
-				<section class="interaction-zone">
-					<div style="display: flex; justify-content: center;">
-						<div class='wbnz-email-signup-form' data-webynize-id='11228'></div>
-						<script defer src='https://widgets.webynize.com/email-signup-form.js'></script>
-					</div>
- 
-					<div style="
-						max-height: 480px;
-						overflow-y: auto;
-						overflow-x: hidden;
-						border: var(--border);
-						box-shadow: var(--shadow);
-					"> <br>
-						<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
-						<div class="commonninja_component pid-8f00ac37-abcc-45a3-a972-e4474801aaf6"></div>
-					</div>
-				</section>
+				<!-- THEMATIC INTERACTION ZONE -->
+<section class="interaction-zone">
+    <div style="display: flex; justify-content: center;">
+        <div class='wbnz-email-signup-form' data-webynize-id='11228'></div>
+        <!-- Using is:inline ensures the script loads as-is -->
+        <script is:inline defer src='https://widgets.webynize.com/email-signup-form.js'></script>
+    </div>
+
+    <div style="
+        max-height: 480px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: var(--border);
+        box-shadow: var(--shadow);
+    ">
+        <script is:inline src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+        <div class="commonninja_component pid-8f00ac37-abcc-45a3-a972-e4474801aaf6"></div>
+    </div>
+</section>
 			</article>
+
+			<hr class="separator"/>
+
+			<!-- 2.The next / Previous Navigation-->
+			<div class="navigation-container">
+  <!-- Previous Button: Shows if there is a previous post -->
+  {prevPost ? (
+    <a href={prevPost.url} class="nav-btn prev">
+      ← Previous: {prevPost.frontmatter.title}
+    </a>
+  ) : (
+    <span class="nav-placeholder" /> 
+  )}
+
+  <!-- Next Button: Only renders if a next post exists -->
+  {nextPost && (
+    <a href={nextPost.url} class="nav-btn next">
+      Next: {nextPost.frontmatter.title} →
+    </a>
+  )}
+</div>
+
+			<!-- 3.Component Styles -->
+
+			<style> 
+			
+			.separator {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 3rem auto 2rem;
+    width: 100%;
+  }
+
+  .navigation-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-btn {
+    text-decoration: none;
+    color: #fff;
+    background-color: #111;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .nav-btn:hover {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+
+  .nav-placeholder {
+    width: 1px; /* Keeps the buttons pushed to their respective corners when one is missing */
+  }
+
+  /* Responsive styles for mobile screens */
+  @media (max-width: 600px) {
+    .navigation-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .nav-btn {
+      text-align: center;
+    }
+
+    .nav-placeholder {
+      display: none;
+    }
+  }
+
+			</style>
 		</div>
 	</body>
 </html>
