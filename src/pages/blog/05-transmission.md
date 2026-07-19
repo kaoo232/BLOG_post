@@ -43,7 +43,7 @@ They screamed from excitement; Vesper could not take his attention from that one
 
 Vesper laughed to his confidence, and he started the show. The movie started with a man... looking at the sea... he was looking to it from a city... away.
 
-The city was named Oran, it is in Algeria, it was during the colonial Era. He was so looking at it with a smile, enjoying looking at the sea... as if he is seeing it from his first time of his life.
+The city was named Oran, it is in Algeria. He was smiling, enjoying looking at the sea... as if he is seeing it from his first time of his life.
 
 "Bonjour!! its my first video.. i will be putting videos each month.. showing my journey with entering the sea world.. my dream is to be a capitan of the ship.. and i will be vlogging my days and routine." He was talking in French, the video had ended with a zoom towards the sea.
 
